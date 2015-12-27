@@ -24,18 +24,18 @@ do
         if matches[2] == 'group' and welcome_stat ~= 'group' then
           data[tostring(msg.to.id)]['settings']['welcome'] = 'group'
           save_data(_config.moderation.data, data)
-          return 'Welcome service already enabled.\nWelcome message will shown in group.'
+          return 'Welcome Service Aknoon Faal Shod.\nWelcome message will shown in group.'
         elseif matches[2] == 'pm' and welcome_stat ~= 'private' then
           data[tostring(msg.to.id)]['settings']['welcome'] = 'private'
           save_data(_config.moderation.data, data)
-          return 'Welcome service already enabled.\nWelcome message will send as private message to new member.'
+          return 'Welcome Service Aknoun Faal Shod.\nWelcome message will send as private message to new member.'
         elseif matches[2] == 'disable' then
           if welcome_stat == 'no' then
-            return 'Welcome service is not enabled.'
+            return 'Welcome service Faal Nist!!'
           else
             data[tostring(msg.to.id)]['settings']['welcome'] = 'no'
             save_data(_config.moderation.data, data)
-            return 'Welcome service has been disabled.'
+            return 'Welcome service !Gheyre! Faal Shod!'
           end
         end
       end
@@ -75,8 +75,8 @@ do
             if data[tostring(msg.to.id)]['rules'] then
               rules = '\nRules :\n'..data[tostring(msg.to.id)]['rules']..'\n'
             end
-            local welcomes = 'Welcome '..username..new_member..' ['..user_id..'].\n'
-                             ..'You are in group '..msg.to.title..'.\n'
+            local welcomes = 'Khosh Oumadi '..username..new_member..' ['..user_id..'].\n'
+                             ..'Grouhe Konuni '..msg.to.title..'.\n'
             if welcome_stat == 'group' then
               receiver = get_receiver(msg)
             elseif welcome_stat == 'private' then
@@ -85,7 +85,7 @@ do
             send_large_msg(receiver, welcomes..about..rules..'\n', ok_cb, false)
           end
         elseif matches[1] == 'chat_del_user' then
-          return 'Bye '..new_member..'!'
+          return 'Khoda Hafezet '..new_member..' :))!'
         end
       end
     end
@@ -95,14 +95,16 @@ do
     description = 'Sends a custom message when a user enters or leave a chat.',
     usage = {
       moderator = {
-        '!welcome group : Welcome message will shows in group.',
-        '!welcome pm : Welcome message will send to new member via PM.',
-        '!welcome disable : Disable welcome message.'
+        '[/!#$%@?][Ww]elcome group : Welcome message will shows in group.',
+        '[/!#$%@?][Ww]elcome pm : Welcome message will send to new member via PM.',
+        '[/!#$%@?][Ww]elcome disable : Disable welcome message.',
+        '^([Ww]elcome) (.*)$'
       },
     },
     patterns = {
       '^!!tgservice (.+)$',
-      '^!(welcome) (.*)$'
+      '^[/!#$%@?]([Ww]elcome) (.*)$'
+      '^([Ww]elcome) (.*)$'
     },
     run = run
   }
