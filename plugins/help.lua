@@ -98,7 +98,7 @@ end
 -- !help command
 local function telegram_help()
   local i = 0
-  local text = "Liste Plugina:\n\n"
+  local text = "Plugins list:\n\n"
   -- Plugins names
   for name in pairsByKeys(plugins) do
     if plugins[name].hidden then
@@ -108,11 +108,9 @@ local function telegram_help()
     text = text..i..'. '..name..'\n'
     end
   end
-  text = text..'\n'..'Vojoud dare '..i..' plugine faal baraye namayesh!.'
-  text = text..'\n'..'Benevis "!help [plugin name]" Ya "!help [plugin number]" Baraye Ettelaate Bishtar!'
-  text = text..'\n'..'Ya "!help all" Baraye Namayesh Hame Ettelaat!'
-  text = text..'\n'..'Ham Chenin Mitunin Az alamatey dg mesle $,@,/,%,@,? Estefade konin'
-  text = text..'\n'..'Hamchenin Bedune Alamat !!!!!!'
+  text = text..'\n'..'There are '..i..' plugins help available.'
+  text = text..'\n'..'Write "!help [plugin name]" or "!help [plugin number]" for more info.'
+  text = text..'\n'..'Or "!help all" to show all info.'
   return text
 end
  
@@ -161,21 +159,15 @@ end
 return {
   description = "Help plugin. Get info from other plugins.",
   usage = {
-    "[/!@#$%?][Hh]elp: Show list of plugins.",
-    "[/!@#$%?][Hh]elp all: Show all commands for every plugin.",
-    "[/!@#$%?][Hh]elp [plugin name]: Commands for that plugin.",
-    "[/!@#$%?][Hh]elp [number]: Commands for that plugin. Type !help to get the plugin number.",
-    "^([Hh]elp)$",
-    "^([Hh]elp all)",
-    "^([Hh]elp) (.+)"
+    "!help: Show list of plugins.",
+    "!help all: Show all commands for every plugin.",
+    "!help [plugin name]: Commands for that plugin.",
+    "!help [number]: Commands for that plugin. Type !help to get the plugin number."
   },
   patterns = {
-    "^[/!@#$%?][Hh]elp$",
-    "^[/!@#$%?][Hh]elp all",
-    "^[/!@#$%?][Hh]elp (.+)"
-    "^([Hh]elp)$",
-    "^([Hh]elp all)",
-    "^([Hh]elp) (.+)"
+    "^!help$",
+    "^!help all",
+    "^!help (.+)"
   },
   run = run
 }
