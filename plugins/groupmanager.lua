@@ -5,11 +5,11 @@ do
     local msg = extra.msg
     local data = extra.data
     if success == 0 then
-      return send_large_msg(get_receiver(msg), 'Cannot generate invite link for this group.\nMake sure you are an admin or a sudoer.')
+      return send_large_msg(get_receiver(msg), 'Emkane Skahte Linke Jadid Dar In Grouh Nist.\nAslan Admini?.')
     end
     data[tostring(msg.to.id)]['link'] = result
     save_data(_config.moderation.data, data)
-    return send_large_msg(get_receiver(msg),'Newest generated invite link for '..msg.to.title..' is:\n'..result)
+    return send_large_msg(get_receiver(msg),'Linke Jaid Baraye Grouhe '..msg.to.title..' ine:\n'..result)
   end
 
   local function set_group_photo(msg, success, result)
@@ -24,7 +24,7 @@ do
       save_data(_config.moderation.data, data)
       data[tostring(msg.to.id)]['settings']['lock_photo'] = 'yes'
       save_data(_config.moderation.data, data)
-      send_large_msg(get_receiver(msg), 'Photo saved!', ok_cb, false)
+      send_large_msg(get_receiver(msg), 'Aks Zakhire Shod', ok_cb, false)
     else
       print('Error downloading: '..msg.id)
       send_large_msg(get_receiver(msg), 'Failed, please try again!', ok_cb, false)
@@ -34,7 +34,7 @@ do
   local function get_description(msg, data)
     local about = data[tostring(msg.to.id)]['description']
     if not about then
-      return 'No description available.'
+      return 'NO Descript In Gouh ;)'
 	  end
     return string.gsub(msg.to.print_name, '_', ' ')..':\n\n'..about
   end
@@ -53,13 +53,13 @@ do
       local data = load_data(_config.moderation.data)
 
       -- create a group
-      if matches[1] == 'mkgroup' and matches[2] and is_mod(msg.from.id, msg.to.id) then
+      if matches[1] == 'makegp' and matches[2] and is_mod(msg.from.id, msg.to.id) then
         create_group_chat (msg.from.print_name, matches[2], ok_cb, false)
-	      return 'Group '..string.gsub(matches[2], '_', ' ')..' has been created.'
+	      return 'Grouhe '..string.gsub(matches[2], '_', ' ')..' Sakhte Shod Va Aknoun Vared Shodid.'
       -- add a group to be moderated
-      elseif matches[1] == 'addgroup' and is_admin(msg.from.id, msg.to.id) then
+      elseif matches[1] == 'addgp' and is_admin(msg.from.id, msg.to.id) then
         if data[tostring(msg.to.id)] then
-          return 'Group is already added.'
+          return 'Grouh Add Shod!'
         end
         -- create data array in moderation.json
         data[tostring(msg.to.id)] = {
@@ -76,19 +76,19 @@ do
             }
           }
         save_data(_config.moderation.data, data)
-        return 'Group has been added.'
+        return 'Grouh Add Shod!.'
       -- remove group from moderation
-      elseif matches[1] == 'remgroup' and is_admin(msg.from.id, msg.to.id) then
+      elseif matches[1] == 'delgp' and is_admin(msg.from.id, msg.to.id) then
         if not data[tostring(msg.to.id)] then
-          return 'Group is not added.'
+          return 'Grouh add Nashode.'
         end
         data[tostring(msg.to.id)] = nil
         save_data(_config.moderation.data, data)
-        return 'Group has been removed'
+        return 'Grouh Az List Pak Shod'
       end
 
       if msg.media and is_chat_msg(msg) and is_mod(msg.from.id, msg.to.id) then
-        if msg.media.type == 'photo' and data[tostring(msg.to.id)] then
+        if msg.media.type == 'aks' and data[tostring(msg.to.id)] then
           if data[tostring(msg.to.id)]['settings']['set_photo'] == 'waiting' then
             load_photo(msg.id, set_group_photo, msg)
           end
@@ -99,22 +99,22 @@ do
 
         local settings = data[tostring(msg.to.id)]['settings']
 
-        if matches[1] == 'setabout' and matches[2] and is_mod(msg.from.id, msg.to.id) then
+        if matches[1] == 'sdarbare' and matches[2] and is_mod(msg.from.id, msg.to.id) then
 	        data[tostring(msg.to.id)]['description'] = matches[2]
 	        save_data(_config.moderation.data, data)
-	        return 'Set group description to:\n'..matches[2]
-        elseif matches[1] == 'about' then
+	        return 'Set group descript to:\n'..matches[2]
+        elseif matches[1] == 'darbare' then
           return get_description(msg, data)
-        elseif matches[1] == 'setrules' and is_mod(msg.from.id, msg.to.id) then
+        elseif matches[1] == 'sghavanin' and is_mod(msg.from.id, msg.to.id) then
 	        data[tostring(msg.to.id)]['rules'] = matches[2]
 	        save_data(_config.moderation.data, data)
-	        return 'Set group rules to:\n'..matches[2]
-        elseif matches[1] == 'rules' then
+	        return 'Set group ghanounha to:\n'..matches[2]
+        elseif matches[1] == 'ghavanin' then
           if not data[tostring(msg.to.id)]['rules'] then
-            return 'No rules available.'
+            return 'Hich Ghabouni Nadare!.'
 	        end
           local rules = data[tostring(msg.to.id)]['rules']
-          local rules = string.gsub(msg.to.print_name, '_', ' ')..' rules:\n\n'..rules
+          local rules = string.gsub(msg.to.print_name, '_', ' ')..' Ghavanin:\n\n'..rules
           return rules
         -- group link {get|set}
         elseif matches[1] == 'link' then
@@ -124,82 +124,82 @@ do
               local link = data[tostring(msg.to.id)]['link']
               return about..'\n\n'..link
             else
-              return 'Invite link does not exist.\nTry !link set to generate.'
+              return 'Linki Vojoud Nadare.\nEmtehan kon Dastour--> !link ta Link Sabt She.'
             end
           elseif matches[2] == 'set' and is_mod(msg.from.id, msg.to.id) then
             msgr = export_chat_link(get_receiver(msg), export_chat_link_cb, {data=data, msg=msg})
           end
-	      elseif matches[1] == 'group' then
+	      elseif matches[1] == 'gp' then
           -- lock {bot|name|member|photo|sticker}
-          if matches[2] == 'lock' then
-            if matches[3] == 'bot' and is_mod(msg.from.id, msg.to.id) then
+          if matches[2] == 'ghofle' then
+            if matches[3] == 'robat' and is_mod(msg.from.id, msg.to.id) then
 	            if settings.lock_bots == 'yes' then
-                return 'Group is already locked from bots.'
+                return 'Az Ghabl Ghofl Boud.'
 	            else
                 settings.lock_bots = 'yes'
                 save_data(_config.moderation.data, data)
-                return 'Group is locked from bots.'
+                return 'Ghofl Shod.BB Bots.'
 	            end
-            elseif matches[3] == 'name' and is_mod(msg.from.id, msg.to.id) then
+            elseif matches[3] == 'esm' and is_mod(msg.from.id, msg.to.id) then
 	            if settings.lock_name == 'yes' then
-                return 'Group name is already locked'
+                return 'Az Ghabl Ghofl Boud'
 	            else
                 settings.lock_name = 'yes'
                 save_data(_config.moderation.data, data)
                 settings.set_name = string.gsub(msg.to.print_name, '_', ' ')
                 save_data(_config.moderation.data, data)
-	              return 'Group name has been locked'
+	              return 'Esm Ghoflid.Khaye dari Esmo Avaz Kon!'
 	            end
-            elseif matches[3] == 'member' and is_mod(msg.from.id, msg.to.id) then
+            elseif matches[3] == 'ozv' and is_mod(msg.from.id, msg.to.id) then
 	            if settings.lock_member == 'yes' then
-                return 'Group members are already locked'
+                return 'Az Ghabl Boud'
 	            else
                 settings.lock_member = 'yes'
                 save_data(_config.moderation.data, data)
 	            end
-	            return 'Group members has been locked'
-            elseif matches[3] == 'photo' and is_mod(msg.from.id, msg.to.id) then
+	            return 'Kasi Dg Nemiad Natars!'
+            elseif matches[3] == 'aks' and is_mod(msg.from.id, msg.to.id) then
 	            if settings.lock_photo == 'yes' then
-                return 'Group photo is already locked'
+                return 'Az Ghabl Boud'
 	            else
                 settings.set_photo = 'waiting'
                 save_data(_config.moderation.data, data)
 	            end
-              return 'Please send me the group photo now'
+              return 'Akso Bede'
             end
           -- unlock {bot|name|member|photo|sticker}
-		      elseif matches[2] == 'unlock' then
-            if matches[3] == 'bot' and is_mod(msg.from.id, msg.to.id) then
+		      elseif matches[2] == 'unghofle' then
+            if matches[3] == 'robat' and is_mod(msg.from.id, msg.to.id) then
 	            if settings.lock_bots == 'no' then
-                return 'Bots are allowed to enter group.'
+                return 'Az Ghabl Boud!'
 	            else
                 settings.lock_bots = 'no'
                 save_data(_config.moderation.data, data)
-                return 'Group is open for bots.'
+                return 'Robat Ha mitunan Bian.'
 	            end
-            elseif matches[3] == 'name' and is_mod(msg.from.id, msg.to.id) then
+            elseif matches[3] == 'esm' and is_mod(msg.from.id, msg.to.id) then
 	            if settings.lock_name == 'no' then
-                return 'Group name is already unlocked'
+                return 'Az Ghabl Boud!'
 	            else
                 settings.lock_name = 'no'
                 save_data(_config.moderation.data, data)
-                return 'Group name has been unlocked'
+                return 'Taghire Esm Emkan Pazire!'
 	            end
-            elseif matches[3] == 'member' and is_mod(msg.from.id, msg.to.id) then
+            elseif matches[3] == 'ozv' and is_mod(msg.from.id, msg.to.id) then
 	            if settings.lock_member == 'no' then
-                return 'Group members are not locked'
+                return 'Ghofl Naboud!'
 	            else
                 settings.lock_member = 'no'
                 save_data(_config.moderation.data, data)
-                return 'Group members has been unlocked'
+                return 'Ghofle Ozvha Baz Shod Vared Shavid!'
 	            end
-            elseif matches[3] == 'photo' and is_mod(msg.from.id, msg.to.id) then
+            elseif matches[3] == 'aks' and is_mod(msg.from.id, msg.to.id) then
 	            if settings.lock_photo == 'no' then
-                return 'Group photo is not locked'
+                return 'Ghofl Naboud'
 	            else
                 settings.lock_photo = 'no'
                 save_data(_config.moderation.data, data)
-                return 'Group photo has been unlocked'
+                return 'GhoflShod.Akso Nemitunan Taghir BEdan'
 	            end
             end
           -- view group settings
@@ -239,14 +239,14 @@ do
             elseif settings.sticker == 'ok' then
               sticker_state = '🔓'
             end
-            local text = 'Group settings:\n'
-                  ..'\n'..lock_bots_state..' Lock group from bot : '..settings.lock_bots
-                  ..'\n'..lock_name_state..' Lock group name : '..settings.lock_name
-                  ..'\n'..lock_photo_state..' Lock group photo : '..settings.lock_photo
-                  ..'\n'..lock_member_state..' Lock group member : '..settings.lock_member
-                  ..'\n'..antispam_state..' Spam and Flood protection : '..settings.anti_flood
+            local text = 'Tanzimate Gorouh:\n'
+                  ..'\n'..lock_bots_state..' Ghofle Robatha az Gp : '..settings.lock_bots
+                  ..'\n'..lock_name_state..' Ghofle Esme Gp : '..settings.lock_name
+                  ..'\n'..lock_photo_state..' Ghofle Akse Gp : '..settings.lock_photo
+                  ..'\n'..lock_member_state..' Ghofle Ozve Gp : '..settings.lock_member
+                  ..'\n'..antispam_state..' Mohafeze Zer Zadan : '..settings.anti_flood
                   ..'\n'..sticker_state..' Sticker policy : '..settings.sticker
-                  ..'\n'..greeting_state..' Welcome message : '..settings.welcome
+                  ..'\n'..greeting_state..' Payame Welcome : '..settings.welcome
             return text
 		      end
         elseif matches[1] == 'sticker' then
@@ -255,21 +255,21 @@ do
               settings.sticker = 'warn'
               save_data(_config.moderation.data, data)
             end
-            return 'Stickers already prohibited.\n'
-                   ..'Sender will be warned first, then kicked for second violation.'
-          elseif matches[2] == 'kick' then
-            if settings.sticker ~= 'kick' then
-              settings.sticker = 'kick'
+            return 'Ghofle Sticker.\n'
+                   ..'Bare Avval Ekhtar Bare Dovom Sik :)'
+          elseif matches[2] == 'sik' then
+            if settings.sticker ~= 'sik' then
+              settings.sticker = 'sik'
               save_data(_config.moderation.data, data)
             end
-            return 'Stickers already prohibited.\nSender will be kicked!'
+            return 'Ghofle Sticker.\nBefresti Siki'
           elseif matches[2] == 'ok' then
             if settings.sticker == 'ok' then
-              return 'Sticker restriction is not enabled.'
+              return 'Ghofle Sticker Faal Nist'
             else
               settings.sticker = 'ok'
               save_data(_config.moderation.data, data)
-              return 'Sticker restriction has been disabled.'
+              return 'Ghfole Sticker Gheyre Faal Shod'
             end
           end
         -- if group name is renamed
@@ -285,15 +285,15 @@ do
             return nil
           end
 		    -- set group name
-		    elseif matches[1] == 'setname' and is_mod(msg.from.id, msg.to.id) then
+		    elseif matches[1] == 'setesm' and is_mod(msg.from.id, msg.to.id) then
           settings.set_name = string.gsub(matches[2], '_', ' ')
           save_data(_config.moderation.data, data)
           rename_chat(get_receiver(msg), settings.set_name, ok_cb, false)
 		    -- set group photo
-		    elseif matches[1] == 'setphoto' and is_mod(msg.from.id, msg.to.id) then
+		    elseif matches[1] == 'setaks' and is_mod(msg.from.id, msg.to.id) then
           settings.set_photo = 'waiting'
           save_data(_config.moderation.data, data)
-          return 'Please send me new group photo now'
+          return 'Akso Bede...'
         -- if a user is added to group
 		    elseif matches[1] == 'chat_add_user' then
           if not msg.service then
@@ -318,14 +318,14 @@ do
             if is_sticker_offender then
               chat_del_user(get_receiver(msg), 'user#id'..user_id, ok_cb, true)
               redis:del(sticker_hash)
-              return 'You have been warned to not sending sticker into this group!'
+              return 'To Nabayad Sticker Berfresti Too In Gorouh'
             elseif not is_sticker_offender then
               redis:set(sticker_hash, true)
-              return 'DO NOT send sticker into this group!\nThis is a WARNING, next time you will be kicked!'
+              return 'Inja Sticker Nafrest!\nEkhtare Avval, Dafe Bad Sik!'
             end
-          elseif settings.sticker == 'kick' then
+          elseif settings.sticker == 'sik' then
             chat_del_user(get_receiver(msg), 'user#id'..user_id, ok_cb, true)
-            return 'DO NOT send sticker into this group!'
+            return 'Sticker Nafres'
           elseif settings.sticker == 'ok' then
             return nil
           end
@@ -360,49 +360,63 @@ do
     description = 'Plugin to manage group chat.',
     usage = {
       admin = {
-        '!mkgroup <group_name> : Make/create a new group.',
-        '!addgroup : Add group to moderation list.',
-        '!remgroup : Remove group from moderation list.'
+        '^[/!@#$%?][Mm]akegp <group_name> : Make/create a new group.',
+        '^[/!@#$%?][Aa]ddgp : Add group to moderation list.',
+        '^[/!@#$%?][Dd]elgp : Remove group from moderation list.',
+        '^([Mm]akegp (.*)$',
+        '^([Aa]ddgp)$',
+        '^([Dd]elgp)$'
       },
       moderator = {
-        '!group <lock|unlock> bot : {Dis}allow APIs bots.',
-        '!group <lock|unlock> member : Lock/unlock group member.',
-        '!group <lock|unlock> name : Lock/unlock group name.',
-        '!group <lock|unlock> photo : Lock/unlock group photo.',
-        '!group settings : Show group settings.',
-        '!link <set> : Generate/revoke invite link.',
-        '!setabout <description> : Set group description.',
-        '!setname <new_name> : Set group name.',
-        '!setphoto : Set group photo.',
-        '!setrules <rules> : Set group rules.',
-        '!sticker warn : Sticker restriction, sender will be warned for the first violation.',
-        '!sticker kick : Sticker restriction, sender will be kick.',
-        '!sticker ok : Disable sticker restriction.'
+        '^[/!@#$%?][Gg]p <ghofle|unghofle> robat : {Dis}allow APIs bots.',
+        '^[/!@#$%?][Gg]p <ghofle|unghofle> ozv : Lock/unlock group member.',
+        '^[/!@#$%?][Gg]p <ghofle|unghofle> esm : Lock/unlock group name.',
+        '^[/!@#$%?][Gg]p <ghofle|unghofle> aks : Lock/unlock group photo.',
+        '^[/!@#$%?][Gg]p settings : Show group settings.',
+        '^[/!@#$%?][Ll]ink <set> : Generate/revoke invite link.',
+        '^[/!@#$%?][Ss]darbare <description> : Set group description.',
+        '^[/!@#$%?][Ss]etesm <new_name> : Set group name.',
+        '^[/!@#$%?][Ss]etaks : Set group photo.',
+        '^[/!@#$%?][Ss]ghavanin <rules> : Set group rules.',
+        '^[/!@#$%?][Ss]ticker warn : Sticker restriction, sender will be warned for the first violation.',
+        '^[/!@#$%?][Ss]ticker kick : Sticker restriction, sender will be kick.',
+        '^[/!@#$%?][Ss]ticker ok : Disable sticker restriction.',
+        '^([Gg]p) (ghofle) (.*)$',
+        '^([Gg]p) (settings)$',
+        '^([Gg]p) (unghofle) (.*)$',
+        '^([Gg]p) (.*)$',
+        '^([Ss]darbare) (.*)$',
+        '^([Ss]etesm) (.*)$',
+        '^([Ss]etaks)$',
+        '^([Ss]ghavanin) (.*)$',
+        '^([Ss]ticker) (.*)$'
       },
       user = {
-        '!about : Read group description',
-        '!rules : Read group rules',
-        '!link <get> : Print invite link'
+        '^[/!@#$%?][Dd]arbare : Read group description',
+        '^[/!@#$%?][Gg]havanin : Read group rules',
+        '^[/!@#$%?][Ll]ink <get> : Print invite link',
+        '^([Dd]arbare)$',
+        '^([Gg]havanin)$'
       },
     },
     patterns = {
-      '^!(about)$',
-      '^!(addgroup)$',
+      '^[/!@#$%?]([Dd]arbare)$',
+      '^[/!@#$%?]([Aa]ddgp)$',
       '%[(audio)%]',
       '%[(document)%]',
-      '^!(group) (lock) (.*)$',
-      '^!(group) (settings)$',
-      '^!(group) (unlock) (.*)$',
-      '^!(link) (.*)$',
-      '^!(mkgroup) (.*)$',
+      '^[/!@#$%?]([Gg]p) (ghofle) (.*)$',
+      '^[/!@#$%?](Gg]p) (settings)$',
+      '^[/!@#$%?](Gg]p) (unghofle) (.*)$',
+      '^[/!@#$%?](Gg]p) (.*)$',
+      '^[/!@#$%?]([Mm]akegp) (.*)$',
       '%[(photo)%]',
-      '^!(remgroup)$',
-      '^!(rules)$',
-      '^!(setabout) (.*)$',
-      '^!(setname) (.*)$',
-      '^!(setphoto)$',
-      '^!(setrules) (.*)$',
-      '^!(sticker) (.*)$',
+      '^[/!@#$%?]([Dd]elgp)$',
+      '^[/!@#$%?]([Gg]havanin)$',
+      '^[/!@#$%?]([Ss]darbare) (.*)$',
+      '^[/!@#$%?]([Ss]etesm) (.*)$',
+      '^[/!@#$%?]([Ss]etaks)$',
+      '^[/!@#$%?]([Ss]ghavanin) (.*)$',
+      '^[/!@#$%?]([Ss]ticker) (.*)$',
       '^!!tgservice (.+)$',
       '%[(video)%]'
     },
