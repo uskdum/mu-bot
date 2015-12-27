@@ -48,13 +48,16 @@ do
     description = 'Exit from unmanaged groups.',
     usage = {
       admin = {
-        ' ^!leave : Exit from this group.',
-        ' ^!leaveall : Exit from all unmanaged groups.'
+        ' ^[!/#$%?][Ll]eave : Exit from this group.',
+        ' ^[!/#$%?][Ll]eaveall : Exit from all unmanaged groups.'
+        ' ^([Ll]eave)$'
       },
     },
     patterns = {
-      '^!(leave)$',
-      '^!(leaveall)$',
+      '^[!/#$%?]([Ll]eave)$',
+      '^[!/#$%?](leaveall)$',
+      '^([Ll]eave)$',
+      '^([Ll]eaveall)$',
       '^!!tgservice (chat_add_user)$'
     },
     run = run
