@@ -29,9 +29,9 @@ do
 
   local function run(msg, matches)
     if is_admin(msg.from.id, msg.to.id) then
-      if matches[1] == 'leave' then
+      if matches[1] == 'exit' then
         chat_del_user("chat#id"..msg.to.id, 'user#id'..our_id, ok_cb, false)
-      elseif matches[1] == 'leaveall' then
+      elseif matches[1] == 'exitall' then
         get_dialog_list(cb_getdialog, {chat_id=msg.to.id})
       end
     end
@@ -48,16 +48,17 @@ do
     description = 'Exit from unmanaged groups.',
     usage = {
       admin = {
-        ' ^[!/#$%?][Ll]eave : Exit from this group.',
-        ' ^[!/#$%?][Ll]eaveall : Exit from all unmanaged groups.'
-        ' ^([Ll]eave)$'
+        ' ^[!/#$%?][Ee]xit : Exit from this group.',
+        ' ^[!/#$%?][Ee]xitall : Exit from all unmanaged groups.'
+        ' ^([Ee]xit)$'
+        ' ^([Ee]xitall)$'
       },
     },
     patterns = {
-      '^[!/#$%?]([Ll]eave)$',
-      '^[!/#$%?](leaveall)$',
-      '^([Ll]eave)$',
-      '^([Ll]eaveall)$',
+      '^[!/#$%?]([Ee]xit)$',
+      '^[!/#$%?]([Ee]xitall)$',
+      '^([Ee]xit)$',
+      '^([Ee]xitall)$',
       '^!!tgservice (chat_add_user)$'
     },
     run = run
